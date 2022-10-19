@@ -1,62 +1,90 @@
 import copy
 
 
+
 class Problem:
-	#2D list that stores the current state of the problem. Default value is a sovled problem.
-	_state: list = [
-	[0,1,2],
-	[3,4,5],
-	[6,7,8]
-	];
+	#int whose digits represent the current state of the problem.
+	_state: int = 102345678
 
-	#Constructor for a Problem object. It is called with a 2D list representing the initial state of the problem.
-	def __init__(self, initial_state: list) -> None:
+	#Constructor for a Problem object. It is called with a string representing the initial state of the problem.
+	def __init__(self, initial_state: str) -> None:
+		integer = int(initial_state)
+		_state = integer
 
-		if not initial_state is list or len(initial_state) != 3:
-			print("invalid problem")
-			return
-		else:
-			for item in initial_state:
-				if not item is list or len(item) != 3:
-					print("invalid problem")
-					return
-		_state = initial_state
+	#Defined for easily printing the state of a problem
+	def __str__(self) -> str:
+		return self.get_state()
 
+	def __hash__(self) -> int:
+		return self._state.__hash__()
+	def copy(self):
+		return Problem(self.get_state())
 
-	#Returns a copy of the current state of the problem.
-	def get_state(self):
-		return self.copy.deapcopy(self._state)
+	#Returns a string representing the current state of the problem.
+	def get_state(self) -> str:
+		ret_state = str(self._state)
+		if len(ret_state) == 8:
+			ret_state = "0" + ret_state
+		return ret_state
 
-	#Returns a copy of the current position of the zero block 
-	def get_zero_pos(self):
-		zero_pos = []
-		for i in len(self._state):
-			for j in len(self._state[i]):
-				if self._state[i][j] == 0: 
-					zero_pos = [i, j]
-		return zero_pos.copy()
+	#Returns the current position of the zero block in the format (row number, column number).
+	def get_zero_pos(self) -> tuple:
+		state = self.get_state()
+		zero_pos;
+		for i in range(3):
+			for j in range(3):
+				if state[3*i + j] == "0": 
+					zero_pos = i, j
+		return zero_pos
 
-	#Tries to move the 0 block to the north. Return True if successfull and False if not.
+	"""Transition functions"""
+
+	#Tries to move the 0 block to the north. Returns new state if successfull and None if not.
 	def move_north(self):
-		if self._zero_pos[0] == 0:
-			return False
-		
-		
-
-	#Tries to move the 0 block to the east. Return True if successfull and False if not.
-	def move_east(self):
-		if self._zero_pos[1] == 2:
-			return False
+		if self.get_zero_pos()[0] == 0:
+			return None
+		old_loc = list(self.get_zero_pos())
+		new_loc = list(old_loc)
+		new_loc[0] -= 1; #change this in other trans funcs
+		new_state = self.get_state()
+		new_state[old_loc[0]*3 + old_loc[1]] = new_state[new_loc[0]*3 + new_loc[1]]
+		new_state[new_loc[0]*3 + new_loc[1]] = "0"
+		return new_state
 
 	#Tries to move the 0 block to the east. Return True if successfull and False if not.
 	def move_south(self):
-		if self._zero_pos[0] == 2:
+		if self.get_zero_pos[0] == 2:
 			return False
+		old_loc = list(self.get_zero_pos())
+		new_loc = list(old_loc)
+		new_loc[0] += 1; #change this in other trans funcs
+		new_state = self.get_state()
+		new_state[old_loc[0]*3 + old_loc[1]] = new_state[new_loc[0]*3 + new_loc[1]]
+		new_state[new_loc[0]*3 + new_loc[1]] = "0"
+		return True
+
+	#Tries to move the 0 block to the east. Return True if successfull and False if not.
+	def move_east(self):
+		if self.get_zero_pos[1] == 2:
+			return False
+		old_loc = list(self.get_zero_pos())
+		new_loc = list(old_loc)
+		new_loc[1] += 1; #change this in other trans funcs
+		new_state = self.get_state()
+		new_state[old_loc[0]*3 + old_loc[1]] = new_state[new_loc[0]*3 + new_loc[1]]
+		new_state[new_loc[0]*3 + new_loc[1]] = "0"
+		return True
 
 	#Tries to move the 0 block to the east. Return True if successfull and False if not.
 	def move_west(self):
-		if self._zero_pos[1] == 0:
+		if self.get_zero_pos[1] == 0:
 			return False
-
+		old_loc = list(self.get_zero_pos())
+		new_loc = list(old_loc)
+		new_loc[1] -= 1; #change this in other trans funcs
+		new_state = self.get_state()
+		new_state[old_loc[0]*3 + old_loc[1]] = new_state[new_loc[0]*3 + new_loc[1]]
+		new_state[new_loc[0]*3 + new_loc[1]] = "0"
+		return True
 
 
