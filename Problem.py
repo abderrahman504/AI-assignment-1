@@ -60,5 +60,3 @@ class Problem:
 
 
 
-
-myProblem: Problem = Problem(5)
