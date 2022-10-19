@@ -8,9 +8,6 @@ class Problem:
 	[3,4,5],
 	[6,7,8]
 	];
-	
-	#Position of the zero block in the format [row number, column number].
-	_zero_pos: list
 
 	#Constructor for a Problem object. It is called with a 2D list representing the initial state of the problem.
 	def __init__(self, initial_state: list) -> None:
@@ -24,11 +21,7 @@ class Problem:
 					print("invalid problem")
 					return
 		_state = initial_state
-		for i in len(initial_state):
-			for j in len(initial_state[i]):
-				if initial_state[i][j] == 0: 
-					_zero_pos = [i, j]
-					break
+
 
 	#Returns a copy of the current state of the problem.
 	def get_state(self):
@@ -36,26 +29,33 @@ class Problem:
 
 	#Returns a copy of the current position of the zero block 
 	def get_zero_pos(self):
-		return self._zero_pos.copy()
+		zero_pos = []
+		for i in len(self._state):
+			for j in len(self._state[i]):
+				if self._state[i][j] == 0: 
+					zero_pos = [i, j]
+		return zero_pos.copy()
 
 	#Tries to move the 0 block to the north. Return True if successfull and False if not.
 	def move_north(self):
-		if self._zero_pos[1] == 0:
+		if self._zero_pos[0] == 0:
 			return False
+		
+		
 
 	#Tries to move the 0 block to the east. Return True if successfull and False if not.
 	def move_east(self):
-		if self._zero_pos[0] == 0 or self._zero_pos[0] == 2:
+		if self._zero_pos[1] == 2:
 			return False
 
 	#Tries to move the 0 block to the east. Return True if successfull and False if not.
 	def move_south(self):
-		if self._zero_pos[0] == 0 or self._zero_pos[1] == 2:
+		if self._zero_pos[0] == 2:
 			return False
 
 	#Tries to move the 0 block to the east. Return True if successfull and False if not.
 	def move_west(self):
-		if self._zero_pos[0] == 0 or self._zero_pos[1] == 2:
+		if self._zero_pos[1] == 0:
 			return False
 
 
