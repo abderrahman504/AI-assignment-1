@@ -40,21 +40,35 @@ def goal_state(state):
 class State:
 	#int whose digits represent the current state of the problem.
 	_state: int = 102345678
+	_cost: int
+	_parent = None
 
 	#Constructor for a Problem object. It is called with a string representing the initial state of the problem.
-	def __init__(self, initial_state: str) -> None:
-		integer = int(initial_state)
-		self._state = integer
+	def __init__(self, initial_state: str, cost: int = 0, parent = None) -> None:
+		self._state = int(initial_state)
+		self._cost = cost
+		self._parent = None
 
 	#Defined for easily printing the state of a problem
 	def __str__(self) -> str:
 		return self.get_state()
-	#Defined so State objects can be used in dicts and sets.
-	def __hash__(self) -> int:
-		return self._state.__hash__()
+	
 	#Returns a copy of this State object.
 	def copy(self):
 		return State(self.get_state())
+
+	#Returns the parent of this State, or None if it has no parent.
+	def get_parent(self) -> _parent:
+		return self._parent
+
+	#Returns the path taken to this state
+	def get_path(self) -> list:
+		stack: list = []
+		current = self
+		while current != None:
+			stack.append(current)
+			current = current.get_parent()
+		return stack
 
 	#Returns a string representing the current state of the problem.
 	def get_state(self) -> str:
@@ -64,14 +78,9 @@ class State:
 		return ret_state
 
 	#Returns the current position of the zero block in the format (row number, column number).
-	def get_zero_pos(self) -> tuple:
-		state = self.get_state()
-		zero_pos: tuple;
-		for i in range(3):
-			for j in range(3):
-				if state[3*i + j] == "0": 
-					zero_pos = i, j
-		return zero_pos
+	def get_zero_pos(self) -> int:
+		state: str = self.get_state()
+		zero_pos: int = state.find("0")
 
 	#Returns true if the current state is the goal, and false otherwise.
 	def is_goal(self) -> bool:
@@ -129,30 +138,17 @@ class State:
 	def get_child_states(self) -> list:
 		children: list = []
 		move = self.move_north()
-		if move != None: children.append(move)
+		if move != None: children.append(int(move.get_state()))
 		
 		move = self.move_south()
-		if move != None: children.append(move)
+		if move != None: children.append(int(move.get_state()))
 		
 		move = self.move_east()
-		if move != None: children.append(move)
+		if move != None: children.append(int(move.get_state()))
 		
 		move = self.move_west()
-		if move != None: children.append(move)
+		if move != None: children.append(int(move.get_state()))
 		return children
 
 
-class Node:
-	_value: State
-	_parent: State
-
-	def __init__(self, value, parent):
-		self._value = value
-		self._parent = parent
-	
-	def get_value(self):
-		return self._value.copy()
-	
-	def get_parent(self):
-		return self._parent.copy()
 
