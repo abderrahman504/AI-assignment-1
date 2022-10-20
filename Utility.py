@@ -43,11 +43,17 @@ class State:
 	_cost: int
 	_parent = None
 
-	#Constructor for a Problem object. It is called with a string representing the initial state of the problem.
+	#Constructor for a Problem object.
 	def __init__(self, initial_state: str, cost: int = 0, parent = None) -> None:
 		self._state = int(initial_state)
 		self._cost = cost
 		self._parent = None
+
+	def __init(self, initial_state: int, cost: int = 0, parent = None) -> None:
+		self._state = initial_state
+		self._cost = cost
+		self._parent = None
+
 
 	#Defined for easily printing the state of a problem
 	def __str__(self) -> str:
@@ -78,10 +84,15 @@ class State:
 		return ret_state
 
 	#Returns the current position of the zero block in the format (row number, column number).
-	def get_zero_pos(self) -> int:
-		state: str = self.get_state()
-		zero_pos: int = state.find("0")
-
+	def get_zero_pos(self) -> tuple:
+		state = self.get_state()
+		zero_pos: tuple;
+		for i in range(3):
+			for j in range(3):
+				if state[3*i + j] == "0": 
+					zero_pos = i, j
+		return zero_pos
+	
 	#Returns true if the current state is the goal, and false otherwise.
 	def is_goal(self) -> bool:
 		return self._state == 12345678
@@ -135,6 +146,7 @@ class State:
 		new_state[pos2[0]*3 + pos2[1]] = temp
 		return State("".join(new_state))
 
+	#Returns a list of the child states as ints.
 	def get_child_states(self) -> list:
 		children: list = []
 		move = self.move_north()

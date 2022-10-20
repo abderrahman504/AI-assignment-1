@@ -1,3 +1,4 @@
+from sympy import false
 from Utility import Node, State
 class State:
 	#int whose digits represent the current state of the problem.
@@ -118,6 +119,7 @@ class Node:
 	
 	def get_parent(self):
 		return self._parent.copy()
+	
 
 hurestic_mode: int = 1
 MANHATTEN_MODE = 1
