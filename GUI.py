@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 import DFS
+import tkinter.scrolledtext as st
 
 window = Tk()
 window.geometry('700x650')
@@ -61,14 +62,32 @@ def solve( labels):
         run_time.set(str(t) + " ms")
         if s:
             global scrollable_frame
-            print("in saaaaaave")
-            print(p[0])
-            print(p[len(p)-1])
+            i=0
+
+            solutionsteps=""
+
+
             for path in p:
                 path = str(path)
                 if len(path) < 9 : path = "0"+ path
-                Label(scrollable_frame, text = path, font = ("Times new roman", 14)).pack()
-                #print(path)
+
+                solutionsteps=solutionsteps+"\n"+path
+
+
+            text_area = st.ScrolledText(scrollable_frame, width=30, height=8, font=("Times New Roman", 15))
+
+            text_area.grid(column=0, pady=10, padx=10)
+
+            # Inserting Text which is read only
+            text_area.insert(tk.INSERT, solutionsteps)
+
+            # Making the text read only
+            text_area.configure(state='disabled')
+
+
+
+
+
             update(p, labels, 0)
 
 
