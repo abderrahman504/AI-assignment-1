@@ -19,7 +19,11 @@ def drawGrid(frame):
 
 
 def update(states, labels, count=0):
-    if count < len(states):
+    if(reset_flag):
+        for i in range(9):
+            labels[i].config(text=' ')
+
+    elif count < len(states) and reset_flag==False:
         state = states[count]
         state = str(state)
         if len(state) < 9 :
@@ -31,12 +35,23 @@ def update(states, labels, count=0):
                 labels[i].config(text=state[i], font=("Arial", 25))
         window.after(300, update, states, labels, count + 1)
 
-def solve(algorithm, intial_state,labels):
+
+
+
+
+
+def solve( labels):
     global success_state
     global cost
     global nodes_num
     global depth
     global run_time
+    global reset_flag
+    reset_flag = False
+    algorithm = str(clicked.get())
+    intial_state=text.get("1.0","end-1c")
+    print(intial_state)
+    print(algorithm)
     if algorithm == "DFS":
         s, p, d, n, t = DFS.dfs(intial_state)
         success_state.set(str(s))
@@ -45,11 +60,15 @@ def solve(algorithm, intial_state,labels):
         nodes_num.set(str(n))
         run_time.set(str(t) + " ms")
         if s:
-            global scrollbar_frame
+            global scrollable_frame
+            print("in saaaaaave")
+            print(p[0])
+            print(p[len(p)-1])
             for path in p:
                 path = str(path)
                 if len(path) < 9 : path = "0"+ path
                 Label(scrollable_frame, text = path, font = ("Times new roman", 14)).pack()
+                #print(path)
             update(p, labels, 0)
 
 
@@ -58,10 +77,11 @@ label1 = Label(window, text = "Enter initail state:", bg = "white" ,font = ("Tim
 label1.place( x = 15, y = 25)
 text = tk.Text(window, width=20, height=1, yscrollcommand=set(), bd=9, font=("helvetica ", 12) )
 text.place(x = 180, y = 25)
+
 solve_button = Button(window, text = "Solve", font = ("Times new roman", 16), width = 10,
-                      command= lambda : solve("DFS","125340678", labels))
+                      command= lambda : solve( labels))
 solve_button.place(x = 380, y = 21)
-reset_button = Button(window, text = "Reset", font = ("Times new roman", 16), width = 10 )
+reset_button = Button(window, text = "Reset",command= lambda : reset(), font = ("Times new roman", 16), width = 10 )
 reset_button.place(x = 520, y = 21)
 
 #Drop List
@@ -71,7 +91,7 @@ clicked.set("Choose an Algorithim")
 dropMenu = OptionMenu(window, clicked, *option)
 dropMenu.place(x= 15, y=80)
 dropMenu.config(font = ("Times new roman", 16), width = 55)
-algorithm = clicked.get()
+
 
 #Results Labels
 success_state  = StringVar(window , "")
@@ -110,24 +130,53 @@ time_label = Label(window, bg = "white",  textvariable = run_time,
 time_label.place(x = 105, y = 530)
 
 #Steps Frame
-container = ttk.Frame(window)
-label2 = Label(container, text = "solution steps", font = ("Times new roman", 14)).pack()
-canvas = tk.Canvas(container, height= 215, width= 345)
-scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
-scrollable_frame = ttk.Frame(canvas)
+#reset_flag=False
+#container = ttk.Frame(window)
+#label2 = Label(container, text = "solution steps", font = ("Times new roman", 14)).pack()
+#canvas = tk.Canvas(container, height= 215, width= 345)
+#scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+#scrollable_frame = ttk.Frame(canvas)
 
-scrollable_frame.bind(
-    "<Configure>",
-    lambda e: canvas.configure(
-        scrollregion=canvas.bbox("all")
+
+def create_stepslabel():
+    global scrollable_frame
+    reset_flag = False
+    container = ttk.Frame(window)
+    label2 = Label(container, text="solution steps", font=("Times new roman", 14)).pack()
+    canvas = tk.Canvas(container, height=215, width=345)
+    scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+    scrollable_frame = ttk.Frame(canvas)
+    canvas.create_window((0, 0), window=scrollable_frame)
+    canvas.configure(yscrollcommand=scrollbar.set)
+    container.place(x=300, y=138)
+    container.config(width=40, height=40)
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+        )
     )
-)
-canvas.create_window((0, 0), window=scrollable_frame)
-canvas.configure(yscrollcommand=scrollbar.set)
-container.place(x = 300, y = 138)
-container.config(width = 40, height = 40)
-canvas.pack(side="left", fill="both", expand=True)
-scrollbar.pack(side="right", fill="y")
+
+create_stepslabel()
+def reset():
+    success_state.set("")
+    nodes_num.set("")
+    cost.set("")
+    run_time.set("")
+    depth.set("")
+    text.delete("1.0","end-1c")
+    clicked.set("Choose an Algorithim")
+    global scrollable_frame
+    global reset_flag
+    reset_flag=True
+    update([],labels,0)
+    scrollable_frame.destroy()
+    #scrollable_frame = ttk.Frame(canvas)
+    create_stepslabel()
+
+
 
 #s, p, d, n = algorithm(clicked, "125340678")
 #success_state.set(str(s))
