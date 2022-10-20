@@ -67,6 +67,11 @@ class State:
 	def get_parent(self) -> _parent:
 		return self._parent
 
+	#Returns the cost of this state
+	def get_cost(self) -> int:
+		return self._cost
+
+
 	#Returns the path taken to this state
 	def get_path(self) -> list:
 		stack: list = []
