@@ -40,9 +40,7 @@ class State:
 		current = self
 		while current != None:
 			stack.append(current.get_state())
-			print(current.get_state())
 			current = current.get_parent()
-			print(current)
 		return stack
 
 	#Returns a string representing the current state of the problem.

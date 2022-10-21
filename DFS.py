@@ -25,4 +25,3 @@ def dfs(intial_state):
                 frontier.append(neighbor_state)
 
     return False, [], depth, len(explored), time.time() - start_time
-
