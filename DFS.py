@@ -1,33 +1,28 @@
 import Utility as u
-import Node as n
 import time
 def dfs(intial_state):
     start_time = time.time()
     frontier = []
-    initial_node = n.Node(int(intial_state), [int(intial_state)], 0)
-    frontier.append(initial_node)
+    frontier.append(u.State(intial_state, 0))
     explored = set()
-    nodes_expanded = 0
-    depth = 0
+    max_depth = 0
     while frontier:
-        node = frontier.pop()
-        state = node.puzzleorder
-        path = node.path
-        depth = max(depth, len(path)-1)
+        state = frontier.pop()
+        puzzle_order = int(state.get_state())
+        depth = state.get_cost()
+        max_depth = max(depth, max_depth)
 
-        if not state in explored:
-            explored.add(state)
-            nodes_expanded += 1
+        if not puzzle_order in explored:
+            explored.add(puzzle_order)
 
-        if u.goal_state(state):
-            return True, path, depth, nodes_expanded , time.time() - start_time
+        if state.is_goal():
+            return True, state.get_path(), depth, len(explored), time.time() - start_time
 
-        neighbors = u.moves(state)
+        neighbors = state.get_child_states()
         for neighbor in neighbors:
             if neighbor not in explored:
-                neighbor_path = path.copy()
-                neighbor_path.append(neighbor)
-                neighbor_state = n.Node(neighbor, neighbor_path, node.cost+1)
+                neighbor_state = u.State(neighbor, depth + 1, state)
                 frontier.append(neighbor_state)
 
-    return False, [], depth, nodes_expanded, time.time() - start_time
+    return False, [], depth, len(explored), time.time() - start_time
+
