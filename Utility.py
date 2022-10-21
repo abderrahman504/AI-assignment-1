@@ -79,7 +79,9 @@ class State:
 		while current != None:
 			stack.append(current)
 			current = current.get_parent()
-		return stack
+		arr = []
+		for i in range(len(stack)): arr.append(stack.pop())
+		return arr
 
 	#Returns a string representing the current state of the problem.
 	def get_state(self) -> str:
