@@ -47,12 +47,12 @@ class State:
 	def __init__(self, initial_state: str, cost: int = 0, parent = None) -> None:
 		self._state = int(initial_state)
 		self._cost = cost
-		self._parent = None
+		self._parent = parent
 
-	def __init(self, initial_state: int, cost: int = 0, parent = None) -> None:
+	def __init__(self, initial_state: int, cost: int = 0, parent = None) -> None:
 		self._state = initial_state
 		self._cost = cost
-		self._parent = None
+		self._parent = parent
 
 
 	#Defined for easily printing the state of a problem
@@ -64,7 +64,7 @@ class State:
 		return State(self.get_state())
 
 	#Returns the parent of this State, or None if it has no parent.
-	def get_parent(self) -> _parent:
+	def get_parent(self):
 		return self._parent
 
 	#Returns the cost of this state
