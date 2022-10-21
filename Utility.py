@@ -39,7 +39,7 @@ class State:
 		stack: list = []
 		current = self
 		while current != None:
-			stack.append(current.get_state())
+			stack.insert(0,current.get_state())
 			current = current.get_parent()
 		return stack
 

@@ -7,7 +7,7 @@ def bfs(intial_state):
     explored = set()
     max_depth = 0
     while queue:
-        state = queue.popleft()
+        state = queue.pop(0)
         puzzle_order = int(state.get_state())
         depth = state.get_cost()
         max_depth = max(depth, max_depth)
@@ -24,3 +24,4 @@ def bfs(intial_state):
                 queue.append(neighbor_state)
 
     return False, [], depth, len(explored), time.time() - start_time
+
