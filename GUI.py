@@ -100,7 +100,7 @@ def solve( labels):
     intial_state=text.get("1.0","end-1c")
 
     if(check_solvability(intial_state)==False):
-        success_state.set("Your input isn't Solvable")
+        success_state.set("can't be solve")
         return
 
 
@@ -114,9 +114,11 @@ def solve( labels):
     elif(algorithm=="A* Manhatten"):
 
         s, p,c, d, n, t=aStar.solve(int(intial_state),aStar.MANHATTEN_MODE)
+        p.reverse()
 
     elif(algorithm=="A* Euclidein")   :
         s, p,c, d, n, t=aStar.solve(int(intial_state), aStar.EUCLIDEAN_MODE)
+        p.reverse()
 
 
 
