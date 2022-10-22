@@ -6,12 +6,6 @@ heuristic_mode: int = 1
 MANHATTEN_MODE = 1
 EUCLIDEAN_MODE = 2
 
-"""
-Info to return:
-1.Search depth
-2.Nodes Expanded
-3.Path to goal
-"""
 
 class PQWrapper:
 	_priority: int
@@ -31,7 +25,7 @@ class PQWrapper:
 		return self._value
 
 
-
+#Solves the given problem with the given heuristic. Returns info about the solution, or None if no solution exists.
 def solve(problem: int, mode: int) -> tuple:
 	heuristic_mode = mode
 	searchDepth = 0
@@ -41,6 +35,7 @@ def solve(problem: int, mode: int) -> tuple:
 	goal_found: bool = False
 	goal: State
 	root: State = State(problem)
+	goalCost: int
 	
 	#Add the initial state (root) to openList.
 	openList.put(PQWrapper(0 + find_heuristic(root), root))
@@ -51,6 +46,7 @@ def solve(problem: int, mode: int) -> tuple:
 		if checking.is_goal(): 
 			goal_found = True
 			goal = checking
+
 			break;
 		#Expanding checking and adding it's children to openList
 		for i in checking.get_child_states():
@@ -68,7 +64,7 @@ def solve(problem: int, mode: int) -> tuple:
 		return None
 	
 	#Return Whatever The GUI wants (path, search depth, number of expanded nodes)
-	return goal.get_path(), searchDepth, expandedNodes
+	return goal.get_path(), goal.get_cost(), searchDepth, expandedNodes
 	
 
 #Finds the heuristic based on the type of A* search
