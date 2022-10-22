@@ -1,6 +1,7 @@
 from cmath import sqrt
 from queue import PriorityQueue
 from Utility import State
+import time
 
 heuristic_mode: int = 1
 MANHATTEN_MODE = 1
@@ -27,6 +28,7 @@ class PQWrapper:
 
 #Solves the given problem with the given heuristic. Returns info about the solution, or None if no solution exists.
 def solve(problem: int, mode: int) -> tuple:
+	timeStart: float = time.time()
 	heuristic_mode = mode
 	searchDepth = 0
 	expandedNodes: int = 0
@@ -63,8 +65,9 @@ def solve(problem: int, mode: int) -> tuple:
 		print("Couldn't solve problem")
 		return None
 	
+	timeEnd: float = time.time()
 	#Return Whatever The GUI wants (path, search depth, number of expanded nodes)
-	return goal.get_path(), goal.get_cost(), searchDepth, expandedNodes
+	return goal.get_path(), goal.get_cost(), searchDepth, expandedNodes, timeEnd - timeStart
 	
 
 #Finds the heuristic based on the type of A* search
