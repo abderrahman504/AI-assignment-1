@@ -118,22 +118,26 @@ def solve( labels):
     reset_flag = False
     algorithm = str(clicked.get())
     intial_state=text.get("1.0","end-1c")
-<<<<<<< HEAD
+
     if(intial_state==""):
         success_state.set("please enter your input")
-        solve_flag = False;
+
+        return
+    if(algorithm=="Choose an Algorithim"):
+        success_state.set("choose Algorithm ")
         return
 
 
-=======
+
+
     if not(validate_input(intial_state)):
         success_state.set("Please enter A valid input")
         return
->>>>>>> dd7c9806924170bdb9cf5394e6c45521c3fe77a2
+
 
     if(check_solvability(intial_state)==False):
         success_state.set("can't be solved")
-        solve_flag = False;
+
         return
 
 
@@ -238,13 +242,6 @@ def reset():
     scrollable_frame.destroy()
     #scrollable_frame = ttk.Frame(canvas)
     create_stepslabel()
-def solve_helper():
-    print(solve_flag)
-    if(solve_flag==False):
-        solve(labels)
-    else:
-        reset()
-
 
 
 
