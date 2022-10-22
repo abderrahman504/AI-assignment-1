@@ -48,7 +48,6 @@ def solve(problem: int, mode: int) -> tuple:
 		if checking.is_goal(): 
 			goal_found = True
 			goal = checking
-
 			break;
 		#Expanding checking and adding it's children to openList
 		for i in checking.get_child_states():
@@ -63,11 +62,11 @@ def solve(problem: int, mode: int) -> tuple:
 
 	if not goal_found:
 		print("Couldn't solve problem")
-		return None
+		return False, 
 	
 	timeEnd: float = time.time()
 	#Return Whatever The GUI wants (path, search depth, number of expanded nodes)
-	return goal.get_path(), goal.get_cost(), searchDepth, expandedNodes, timeEnd - timeStart
+	return True, goal.get_path(), goal.get_cost(), searchDepth, expandedNodes, timeEnd - timeStart
 	
 
 #Finds the heuristic based on the type of A* search
