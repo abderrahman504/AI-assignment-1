@@ -4,6 +4,7 @@ from tkinter import ttk
 import DFS
 import tkinter.scrolledtext as st
 import bfs
+import aStar
 window = Tk()
 window.geometry('700x650')
 window['bg'] = 'Plum'
@@ -105,14 +106,26 @@ def solve( labels):
 
     if algorithm == "DFS":
         s, p, d, n, t = DFS.dfs(intial_state)
+        c=str(len(p) - 1)
 
     elif(algorithm=="BFS"):
         s, p, d, n, t=bfs.bfs(intial_state)
+        c=str(len(p) - 1)
+    elif(algorithm=="A* Manhatten"):
+
+        s, p,c, d, n, t=aStar.solve(int(intial_state),aStar.MANHATTEN_MODE)
+
+    elif(algorithm=="A* Euclidein")   :
+        s, p,c, d, n, t=aStar.solve(int(intial_state), aStar.EUCLIDEAN_MODE)
+
+
+
     success_state.set(str(s))
-    cost.set(str(len(p) - 1))
+    cost.set(str(c))
     depth.set(str(d))
     nodes_num.set(str(n))
     run_time.set(str(t) + " ms")
+
     if s:
         global scrollable_frame
         i = 0
