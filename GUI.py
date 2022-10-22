@@ -114,14 +114,12 @@ def solve( labels):
     elif(algorithm=="A* Manhatten"):
 
         s, p,c, d, n, t=aStar.solve(int(intial_state),aStar.MANHATTEN_MODE)
-        p.reverse()
+
 
     elif(algorithm=="A* Euclidein")   :
         s, p,c, d, n, t=aStar.solve(int(intial_state), aStar.EUCLIDEAN_MODE)
-        p.reverse()
 
-
-
+    p.reverse()
     success_state.set(str(s))
     cost.set(str(c))
     depth.set(str(d))
