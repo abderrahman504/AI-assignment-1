@@ -35,6 +35,7 @@ def update(states, labels, count=0):
     :param count:
     :return:
     """
+    global solve_button
     if(reset_flag):
         for i in range(9):
             labels[i].config(text=' ')
@@ -50,6 +51,7 @@ def update(states, labels, count=0):
             else:
                 labels[i].config(text=state[i], font=("Arial", 25))
         window.after(300, update, states, labels, count + 1)
+
 def getinversions(initial_state):
     """
     function used to count inversion num of the initail state
@@ -84,23 +86,38 @@ def check_solvability(input):
 
 
 def solve( labels):
+
+
     """
     function to call the right algorithm which the user chose
     :param labels: labels of grid dells
     :return:
     """
+    global solve_button
+    solve_button.config(state=DISABLED)
+
     global success_state
     global cost
     global nodes_num
     global depth
     global run_time
     global reset_flag
+
+
+
     reset_flag = False
     algorithm = str(clicked.get())
     intial_state=text.get("1.0","end-1c")
+    if(intial_state==""):
+        success_state.set("please enter your input")
+        solve_flag = False;
+        return
+
+
 
     if(check_solvability(intial_state)==False):
-        success_state.set("can't be solve")
+        success_state.set("can't be solved")
+        solve_flag = False;
         return
 
 
@@ -126,6 +143,7 @@ def solve( labels):
     nodes_num.set(str(n))
     run_time.set(str(t) + " ms")
 
+
     if s:
         global scrollable_frame
         i = 0
@@ -145,7 +163,11 @@ def solve( labels):
         text_area.insert(tk.INSERT, solutionsteps)
         # Making the text read only
         text_area.configure(state='disabled')
+
         update(p, labels, 0)
+
+
+
 
 
 
@@ -160,13 +182,16 @@ def create_stepslabel():
     label2 = Label(container, text="solution steps", font=("Times new roman", 14)).pack()
     canvas = tk.Canvas(container, height=215, width=345)
     scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+
     scrollable_frame = ttk.Frame(canvas,relief="solid")
     canvas.create_window((0, 0), window=scrollable_frame)
     canvas.configure(yscrollcommand=scrollbar.set)
+
     container.place(x=300, y=138)
     container.config(width=40, height=40)
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
+
     scrollable_frame.bind(
         "<Configure>",
         lambda e: canvas.configure(
@@ -175,11 +200,14 @@ def create_stepslabel():
     )
 
 create_stepslabel()
+
 def reset():
     """
     to clear every thing after clicking reset button
     :return:
     """
+    global solve_button
+    solve_button.config(state=NORMAL)
     success_state.set("")
     nodes_num.set("")
     cost.set("")
@@ -194,7 +222,12 @@ def reset():
     scrollable_frame.destroy()
     #scrollable_frame = ttk.Frame(canvas)
     create_stepslabel()
-
+def solve_helper():
+    print(solve_flag)
+    if(solve_flag==False):
+        solve(labels)
+    else:
+        reset()
 
 
 
@@ -202,7 +235,7 @@ def reset():
 #GUI #
 
 labels = drawGrid(window)
-label1 = Label(window, text = "Enter initail state:",bg=window["bg"],font = ("Times new roman", 16, "bold"))
+label1 = Label(window, text = "Enter initial state:",bg=window["bg"],font = ("Times new roman", 16, "bold"))
 label1.place( x = 15, y = 25)
 text = tk.Text(window, width=20, height=1, yscrollcommand=set(), bd=9, font=("helvetica ", 12) )
 text.place(x = 180, y = 25)
