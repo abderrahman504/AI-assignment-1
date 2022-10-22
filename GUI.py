@@ -11,6 +11,16 @@ window['bg'] = 'Plum'
 #window['bg'] ="LightSkyBlue"
 
 
+def validate_input(input):
+    input = "".join(input.split())
+    if len(input) != 9:
+        return False
+    nums = "012345678"
+    for num in input:
+        if num not in nums:
+            return False
+    return True
+
 def drawGrid(frame):
     """
     used to draw grid of 9 cells
@@ -108,12 +118,18 @@ def solve( labels):
     reset_flag = False
     algorithm = str(clicked.get())
     intial_state=text.get("1.0","end-1c")
+<<<<<<< HEAD
     if(intial_state==""):
         success_state.set("please enter your input")
         solve_flag = False;
         return
 
 
+=======
+    if not(validate_input(intial_state)):
+        success_state.set("Please enter A valid input")
+        return
+>>>>>>> dd7c9806924170bdb9cf5394e6c45521c3fe77a2
 
     if(check_solvability(intial_state)==False):
         success_state.set("can't be solved")
