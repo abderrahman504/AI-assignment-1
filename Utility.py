@@ -6,13 +6,8 @@ class State:
 	_parent = None
 
 	#Constructor for a Problem object.
-	def __init__(self, initial_state: str, cost: int = 0, parent = None) -> None:
+	def __init__(self, initial_state, cost: int = 0, parent = None) -> None:
 		self._state = int(initial_state)
-		self._cost = cost
-		self._parent = parent
-
-	def __init__(self, initial_state: int, cost: int = 0, parent = None) -> None:
-		self._state = initial_state
 		self._cost = cost
 		self._parent = parent
 

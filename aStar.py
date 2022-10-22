@@ -45,6 +45,7 @@ def solve(problem: int, mode: int) -> tuple:
 	while not openList.empty():
 		checking: State = openList.get().get_value()
 		searchDepth = checking.get_cost() if checking.get_cost() > searchDepth else searchDepth
+		expandedNodes += 1
 		if checking.is_goal(): 
 			goal_found = True
 			goal = checking
@@ -58,7 +59,6 @@ def solve(problem: int, mode: int) -> tuple:
 			h = find_heuristic(newState)
 			openList.put(PQWrapper(childCost + h, newState))
 		closedList[int(checking.get_state())] = checking
-		expandedNodes += 1
 
 	if not goal_found:
 		print("Couldn't solve problem")
@@ -71,7 +71,7 @@ def solve(problem: int, mode: int) -> tuple:
 
 #Finds the heuristic based on the type of A* search
 def find_heuristic(state: State) -> float:
-	h: int = 0
+	h: float = 0
 	string: str = state.get_state()
 	for digitPos in range(len(string)):
 		digit: int = int(string[digitPos])
@@ -86,7 +86,7 @@ def find_heuristic(state: State) -> float:
 	return h
 
 
-def get_manhatten_dis(loc1: tuple, loc2: tuple) -> int:
+def get_manhatten_dis(loc1: tuple, loc2: tuple) -> float:
 	return abs(loc1[0] - loc2[0]) + abs(loc1[1] - loc2[1])
 
 
