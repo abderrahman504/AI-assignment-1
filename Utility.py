@@ -1,9 +1,9 @@
 
 class State:
-	#int whose digits represent the current state of the problem.
-	_state: int = 102345678
-	_cost: int
-	_parent = None
+	
+	_state: int = 102345678 #int whose digits represent the current state of the problem.
+	_cost: int	#The cost of getting to this State in the search tree
+	_parent = None	#The parent of this State in the search tree
 
 	#Constructor for a Problem object.
 	def __init__(self, initial_state, cost: int = 0, parent = None) -> None:
@@ -15,14 +15,12 @@ class State:
 	#Defined for easily printing the state of a problem
 	def __str__(self) -> str:
 		return self.get_state()
-	
-	#Returns a copy of this State object.
-	def copy(self):
-		return State(self.get_state())
+
 
 	#Returns the parent of this State, or None if it has no parent.
 	def get_parent(self):
 		return self._parent
+
 
 	#Returns the cost of this state
 	def get_cost(self) -> int:
@@ -40,12 +38,14 @@ class State:
 		for i in range(len(stack)): arr.append(stack.pop())
 		return arr
 
+
 	#Returns a string representing the current state of the problem.
 	def get_state(self) -> str:
 		ret_state = str(self._state)
 		if len(ret_state) == 8:
 			ret_state = "0" + ret_state
 		return ret_state
+
 
 	#Returns the current position of the zero block in the format (row number, column number).
 	def get_zero_pos(self) -> tuple:
@@ -103,6 +103,7 @@ class State:
 		
 		return self._swap(old_loc, new_loc)
 
+	#Swaps two numbers in the puzzle
 	def _swap(self, pos1, pos2):
 		new_state = list(self.get_state())
 		temp: str = new_state[pos1[0]*3 + pos1[1]]
@@ -128,6 +129,4 @@ class State:
 		if move != None: children.append(int(move.get_state()))
 
 		return children
-
-
 
